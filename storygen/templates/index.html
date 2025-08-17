@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        label {
+            font-size: 1.1em;
+            color: #34495e;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 1em;
+            resize: vertical;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            background-color: #3498db;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .output-section {
+            margin-top: 40px;
+            border-top: 2px solid #ecf0f1;
+            padding-top: 30px;
+        }
+        
+        .output-heading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        
+        .story-container, .character-container, .image-container {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            text-align: left;
+        }
+
+        .output-title {
+            color: #34495e;
+            font-size: 1.5em;
+            margin-top: 0;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        .output-text {
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to the Story Generator!</h1>
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            <label for="prompt">Enter your story idea:</label>
+            <br>
+            <textarea id="prompt" name="prompt" rows="4" cols="50" placeholder="e.g., A wizard in a magic forest"></textarea>
+            <br>
+            <button type="submit">Generate</button>
+        </form>
+
+        {% if story_text and character_description_text %}
+            <div class="output-section">
+                <div class="output-heading">
+                    <h2>Generated Story</h2>
+                </div>
+                <div class="story-container">
+                    <h3 class="output-title">Story:</h3>
+                    <p class="output-text">{{ story_text }}</p>
+                </div>
+                <div class="character-container">
+                    <h3 class="output-title">Character Description:</h3>
+                    <p class="output-text">{{ character_description_text }}</p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if combined_image_path %}
+            <div class="image-container">
+                <h3 class="output-title">Generated Scene:</h3>
+                <img src="/{{ combined_image_path }}" alt="Generated Story Scene">
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
